@@ -18,23 +18,6 @@ class DataScanner:
     
     @classmethod
     def extract_pdf_text(cls, file_content):
-/*************  ✨ Codeium Command ⭐  *************/
-"""
-Extracts text from a PDF file content.
-
-This method takes the binary content of a PDF file and extracts its textual 
-content using the PyPDF2 library. It iterates through each page of the PDF, 
-appending the extracted text to a cumulative string which is returned. If 
-an error occurs during extraction, it prints an error message and returns 
-an empty string.
-
-Parameters:
-file_content (bytes): The binary content of the PDF file.
-
-Returns:
-str: The extracted text from the PDF. Returns an empty string if extraction fails.
-"""
-/******  2d760bf9-4238-4b28-b3e9-ba2b6a16bf46  *******/
         try:
             pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_content))
             text = ""
