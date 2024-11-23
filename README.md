@@ -4,7 +4,7 @@
 A web application designed to scan and classify sensitive information in various file types, identifying Personally Identifiable Information (PII), Protected Health Information (PHI), and Payment Card Information (PCI).
 
 ## deployed the backend on `render.com`
-<a href='https://www.google.com'>link</a>
+<a href='https://document-scanner-p889.onrender.com/'>Document scanner website link</a>
 
 ## Features
 - File upload support (txt, csv, log, pdf)
