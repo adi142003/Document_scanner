@@ -13,6 +13,8 @@ A web application designed to scan and classify sensitive information in various
 - Store scan results in SQLite database
 - View and delete scan results
 - Supports multiple file types
+## System design diagram
+<img width="436" alt="system-design" src="https://github.com/user-attachments/assets/5d6130d0-0b89-4e1d-b6f0-7f6ee9ba8956">
 
 ## Technology Stack
 - Backend: FastAPI
