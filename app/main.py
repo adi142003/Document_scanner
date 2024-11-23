@@ -3,7 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.requests import Request
 from sqlalchemy.orm import Session
-import os
+# import os
 
 from .database import SessionLocal, ScanResult
 from .scanner import DataScanner
@@ -13,8 +13,6 @@ templates = Jinja2Templates(directory="app/templates")
 
 def get_db():
     """
-    Dependency function that yields a database session.
-    
     This function is a FastAPI dependency that yields a database session to be used
     by the endpoint. It also ensures that the database session is closed after use.
     """

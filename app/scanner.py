@@ -5,6 +5,9 @@ import google.generativeai as genai
 
 api_key = "AIzaSyDZ9kU8DSjbCq5sZOcV0Nj-4LSvCe8qyfo"
 
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel('gemini-1.5-flash')
+
 class DataScanner:
     PATTERNS = {
         'PAN': r'\b[A-Z]{5}\d{4}[A-Z]{1}\b',
@@ -13,7 +16,7 @@ class DataScanner:
         'Credit Card': r'\b(?:\d{4}[-\s]?){3}\d{4}\b',
         'Health Insurance': r'\b[A-Z]{2}\d{10}\b',
         'voter_id': r'\b[A-Z]{3}\d{7}\b',
-        'driving_licence': r'\b(([A-Z]{2}\d{2})(\s)|([A-Z]{2}-\d{2}))((19|20)[0-9][0-9])[0-9]{7}\b'
+        'driving_licence': r'^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$'
     }
     
     @classmethod
@@ -43,16 +46,24 @@ class DataScanner:
             matches = re.findall(pattern, content)
             for match in matches:
                 # Determine classification
-                if use_ai:
-                    classification = cls.classify_gemini(match)
-                else:
-                    classification = cls.classify_data(info_type)
+                # if use_ai:
+                #     classification = cls.classify_gemini(match)
+                # else:
+                classification = cls.classify_data(info_type)
                 
                 results.append({
                     'type': classification,
                     'info_type': info_type,
-                    'value': match
+                    'value': "".join(match)
                 })
+        
+        if use_ai:
+            classification = cls.classify_gemini_2(file_content)
+            results.append({
+                'type': classification,
+                'info_type': "AI", 
+                'value': "AI",
+            })
         
         return results
     
@@ -72,9 +83,6 @@ class DataScanner:
     @staticmethod
     def classify_gemini(sensitive_data):
         try:
-            # Configure Gemini API (ensure to keep API key secure)
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-1.5-flash')
             
             # Prompt for classification
             prompt = f"""
@@ -89,6 +97,34 @@ class DataScanner:
             
             response = model.generate_content(prompt)
             return response.text.strip()
+        except Exception as e:
+            print(f"Gemini classification error: {e}")
+            return 'Unknown'
+        
+    @staticmethod
+    def classify_gemini_2(file_content):
+        try:
+            prompt = f'''
+                Scan this content {file_content} and 
+                detect if it contains sensitive data like,
+                'PAN': 'PII',
+                'SSN': 'PII',
+                'voter_id': 'PII',
+                'driving_licence': 'PII',
+                'Medical Record': 'PHI',
+                'Credit Card': 'PCI',
+                'Health Insurance': 'PHI' etc.
+                Then classifify into 
+                - PII (Personally Identifiable Information)
+                - PHI (Protected Health Information)
+                - PCI (Payment Card Information)
+                - Unknown
+                
+                Your reply should be brief and contain full information
+            '''
+            response = model.generate_content(prompt)
+            return response.text
+        
         except Exception as e:
             print(f"Gemini classification error: {e}")
             return 'Unknown'
