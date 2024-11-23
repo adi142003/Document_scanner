@@ -1,0 +1,30 @@
+graph TD
+    subgraph Frontend
+        A[Web Interface] -->|Upload File| B[FastAPI Backend]
+        A -->|View Results| B
+    end
+
+    subgraph Backend Processing
+        B -->|Process File| C[File Scanner]
+        C -->|Extract Text| D[Text Processor]
+        D -->|Pattern Matching| E[Data Classifier]
+    end
+
+    subgraph Database
+        E -->|Store Results| F[SQLite Database]
+        F -->|Retrieve Results| B
+    end
+
+    subgraph Scanner Components
+        D --> G[PDF Parser]
+        D --> H[Text Parser]
+        E --> I[PII Detection]
+        E --> J[PHI Detection]
+        E --> K[PCI Detection]
+    end
+
+    subgraph Data Flow
+        L[Raw File] -->|Upload| A
+        E -->|Classification Results| M[Scan Results]
+        M -->|Display| A
+    end

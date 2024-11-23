@@ -53,6 +53,12 @@ DATABASE_URL=sqlite:///./scanner.db
 ```bash
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
+## Testing the application
+Go to the root directory of the app and run the below command:
+```
+pytest
+```
+OR
 
 ### Access the Application
 - Upload Page: `http://localhost:8000/`

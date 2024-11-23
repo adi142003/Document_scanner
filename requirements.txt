@@ -9,3 +9,9 @@ google
 google.generativeai
 jinja2
 PyPDF2
+pytest
+pytest-cov
+httpx
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
